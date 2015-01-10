@@ -1,6 +1,6 @@
 name: compare-type
 category: Dependent Types
-version: 0.1
+version: 0.1.1
 license: BSD3
 license-file: LICENSE
 cabal-version: >= 1.10
@@ -10,10 +10,10 @@ maintainer: Yusuke Matsushita <y.skm24t@gmail.com>
 stability: provisional
 homepage: https://github.com/Kinokkory/compare-type
 bug-reports: https://github.com/Kinokkory/compare-type/issues
-copyright: (c) Yusuke Matsushita 2014
+copyright: (c) Yusuke Matsushita 2015
 synopsis: compare types of any kinds in haskell
 description:
-    Compare types of any kinds in Haskell.
+    Compare two types of any (possibly different) kinds in Haskell.
     .
     More information can be found in the <http://hackage.haskell.org/package/compare-type hackage's haddock> or the <http://kinokkory.github.io/compare-type/ updated haddock>.
 
@@ -33,6 +33,6 @@ library
         TypeFamilies,
         UndecidableInstances
     build-depends:
-        base ==4.*
+        base >= 4.7 && < 5
     exposed-modules: Type.Compare
     ghc-options: -Wall

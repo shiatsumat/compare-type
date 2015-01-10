@@ -4,10 +4,27 @@
     TypeFamilies,
     UndecidableInstances #-}
 
+--------------------------------------------------------------------------------
+-- |
+-- Module: Type.Compare
+-- Copyright: (c) Yusuke Matsushita 2015
+-- License: BSD3
+-- Maintainer: Yusuke Matsushita
+-- Stability: provisional
+-- Portability: portable
+--
+-- Compare two types of any (possibly different) kinds.
+--------------------------------------------------------------------------------
+
 module Type.Compare (
-    -- * Comparison
-    Compare, LargestK(Largest), SmallestK(Smallest), CompareUser,
-    OrdCase, CompareCase, type (<!), type (>=!), type (>!), type (<=!), Max, Min
+    -- * Base
+    Compare,
+    LargestK(Largest), SmallestK(Smallest),
+    CompareUser,
+    -- * Utility
+    OrdCase, CompareCase,
+    type (<!), type (>=!), type (>!), type (<=!),
+    Max, Min
   ) where
 
 import Data.Ord
@@ -24,16 +41,18 @@ data LargestK = Largest
 -- | The smallest type (and kind) on 'Compare'.
 data SmallestK = Smallest
 
--- | Compare two types.
+-- | Compare two types of any (possibly different) kinds.
+-- Since `Compare` itself is a closed type family, add instances to `CompareUser` if you want to compare other types.
 type family Compare (a :: k) (b :: k') :: Ordering where
+
+  Compare (Down a) (Down b) = Compare b a
+
   Compare Largest Largest = EQ
   Compare _' Largest = LT
   Compare Largest _' = GT
   Compare Smallest Smallest = EQ
   Compare _' Smallest = GT
   Compare Smallest _' = LT
-
-  Compare (Down a) (Down b) = Compare b a
 
   Compare False False = EQ
   Compare False True = LT
@@ -93,7 +112,7 @@ type family Compare (a :: k) (b :: k') :: Ordering where
 
   Compare a b = CompareUser a b
 
--- | Compare two types. Users can add instances.
+-- | Compare two types, of any kinds, which are not compared within `Compare`. Users can add instances.
 type family CompareUser (a :: k) (b :: k') :: Ordering
 
 type family OrdCase (o :: Ordering) (x :: l1) (y :: l2) (z :: l3) :: l where
